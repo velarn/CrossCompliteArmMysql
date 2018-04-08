@@ -1,4 +1,6 @@
 
+为天嵌E9交叉编译MySQL
+
 # 0 环境描述
 1. 硬件平台：天嵌E9-V3 iMXQ
 1. 交叉编译器版本：arm-none-linux-gnueabihf
@@ -36,6 +38,7 @@
 ### 2.1.1 执行带参数camke命令
 
 在mysql-5.7.21-pc目录下执行： 
+
 `
 cmake . -LH -DCMAKE_INSTALL_PREFIX=/home/velarn/work/mysql/build/ -DMYSQL_DATADIR=/home/velarn/work/mysql/build/data -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci  -DEXTRA_CHARSETS=all -DENABLED_LOCAL_INFILE=1  -DWITH_BOOST=/home/velarn/work/boost/boost_1_59_0
 `
