@@ -1,41 +1,48 @@
 
 为天嵌E9交叉编译MySQL
 
-# 0 环境描述
+目录
+----
+* [环境描述](#0环境描述)
+* [编译前准备](#1编译前准备)
+* [编译PC版本mysql](#2编译PC版本MySQL)
+* [编译arm版本mysql](#3编译arm版本mysql)
+* [部署到目标arm板](#4部署到目标arm板)
+* [一些其他操作](#5一些其他操作)
+
+# 0环境描述
+----
 1. 硬件平台：天嵌E9-V3 iMXQ
 1. 交叉编译器版本：arm-none-linux-gnueabihf
 1. MySql版本：5.7.21
 1. 上位机版本：Ubuntu 17.04
 
-# 1 编译前准备  
+# 1编译前准备  
 
-##  1.1 主要参考：  
+##  1.1主要参考：  
 
 [https://blog.csdn.net/fhyocean/article/details/74960005](https://blog.csdn.net/fhyocean/article/details/74960005)
 
 
-##  1.2 下载mysql源码：  
+##  1.2下载mysql源码：  
 
 [https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.21.tar.gz](https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.21.tar.gz)
 
-##  1.3 下载boost源码：  
+##  1.3下载boost源码：  
 
 [https://jaist.dl.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz](https://jaist.dl.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.gz)
 
-##  1.4 下载ncurses源码：  
+##  1.4下载ncurses源码：  
 
 [https://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.9.tar.gz](https://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.9.tar.gz) 
 
 **注意：5.7.21版本mysql对应的boost版本是1.59.0** 
 
-<!--more-->
+# 2编译PC版本MySQL
 
-# 2 编译PC版本mysql  
+##  2.1解压源码至mysql-5.7.21-pc并编译  
 
-
-##  2.1 解压源码至mysql-5.7.21-pc并编译  
-
-### 2.1.1 执行带参数camke命令
+### 2.1.1执行带参数camke命令
 
 在mysql-5.7.21-pc目录下执行： 
 
@@ -71,7 +78,7 @@ sudo apt-get install -y build-essential
 [https://blog.csdn.net/xx352890098/article/details/78819852](https://blog.csdn.net/xx352890098/article/details/78819852)
 
 
-### 2.1.2 再次执行cmake带参数命令
+### 2.1.2再次执行cmake带参数命令
 
 **报错 “找不到curses”：**
 
@@ -81,9 +88,9 @@ sudo apt-get install -y build-essential
 
 sudo apt install libncurses5-dev
 
-### 2.1.3 再次执行cmake带参数命令
+### 2.1.3再次执行cmake带参数命令
 
-##  2.2 make  
+##  2.2make  
 
 cmake没有错误的情况下，执行make -j4开始编译。
 无需make install。
@@ -101,9 +108,9 @@ cmake没有错误的情况下，执行make -j4开始编译。
 
 **至此pc版本mysql编译完成**
 
-# 3 编译arm版本mysql  
+# 3编译arm版本mysql  
 
-##  3.1 交叉编译ncurses  
+##  3.1交叉编译ncurses  
 
 `
 ./configure --prefix=/home/velarn/work/ncurses/build --host=arm-linux-gnueabihf CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++  
@@ -128,7 +135,7 @@ cmake没有错误的情况下，执行make -j4开始编译。
 **参考：**
 [https://stackoverflow.com/questions/37475222/ncurses-6-0-compilation-error-error-expected-before-int/37475223](https://stackoverflow.com/questions/37475222/ncurses-6-0-compilation-error-error-expected-before-int/37475223)
 
-##  3.2 执行CMAKE  
+##  3.2执行CMAKE  
 
 将mysql源码压缩包解压至mysql-5.7.21-arm文件夹并执行:
 
@@ -145,11 +152,11 @@ cmake . -LH -DCMAKE_INSTALL_PREFIX=/usr/local/arm/mysql -DMYSQL_DATADIR=/usr/loc
 
 **这两项会被填充到最终生成的mysql.server文件中，因此在arm环境中，务必使mysql所在文件夹与此目录相同。否则在arm端运行mysql时会出现问题。**
 
-##  3.3 执行make  
+##  3.3执行make  
 
 cmake无错误，执行make
 
-### 3.3.1 make时可能出现的错误
+### 3.3.1make时可能出现的错误
 
  **第一类：** ncurses文件的头文件包含路径问题
 
@@ -226,11 +233,11 @@ cmake无错误，执行make
 
 主要解决思想就是修改os0atomic.h和os0atomic.ic两个文件的一些宏定义。
 
-##  3.4 执行make install  
+##  3.4执行make-install  
 
 执行make并在无错误后，执行完make install，之后会在/usr/local/arm/目录下生成mysql文件夹。
 
-##  3.5 需要拷贝并touch的文件列表  
+##  3.5需要拷贝并touch的文件列表  
 
 >$ cp extra/comp_err /home/velarn/work/mysql/mysql-5.7.21-arm/mysql-5.7.21/extra/  
 >$ cp scripts/comp_sql /home/velarn/work/mysql/mysql-5.7.21-arm/mysql-5.7.21/scripts/  
@@ -241,14 +248,14 @@ cmake无错误，执行make
 
 **至此ARM版的mysql交叉编译完成。**
 
-# 4 部署到目标arm板  
+# 4部署到目标arm板  
 
-##  4.1 拷贝文件：  
+##  4.1拷贝文件：  
 
 1. 将/usr/local下的arm目录打包压缩并上传至目标机器的/usr/local/中并解压.
 2. 在/usr/local/arm/mysql目录下创建data文件夹。
 
-##  4.2 初始化mysql  
+##  4.2初始化mysql  
 
 执行：（注意目录）
 
@@ -272,7 +279,7 @@ cmake无错误，执行make
 
 **需要注意的是， “1NSRjqXdTd!&”是自动生成的密码，请记录下来。**
 
-##  4.3 启动mysql  
+##  4.3启动mysql  
 
 执行：
 
@@ -284,7 +291,7 @@ cmake无错误，执行make
 
 至此可以在终端执行 ps -aux | grep mysql 来查看mysql的pid。
 
-##  4.4 另外一种启动方式：  
+##  4.4另外一种启动方式：  
 
 网上诸多教程中，是通过执行./support-files/mysql.server start来启动mysql，但是会出现大名鼎鼎的**The server quit without updating PID file**错误。
 
@@ -369,12 +376,12 @@ wait_for_pid返回错误肯定是mysqld_safe没起来嘛。于是乎手动测试
 
 **至此arm版的mysql移植完成。**
 
-## 4.5 添加开机启动，待续。
+## 4.5添加开机启动，待续。
 
 
-# 5 一些其他操作  
+# 5一些其他操作  
 
-##  5.1 登陆mysql：  
+##  5.1登陆mysql：  
 
 执行：
 `
@@ -403,7 +410,7 @@ wait_for_pid返回错误肯定是mysqld_safe没起来嘛。于是乎手动测试
 
 进入mysql成功。
 
-##  5.2 更改默认密码  
+##  5.2更改默认密码  
 
 使用安装时生成的随机密码登陆mysql:  
 
