@@ -1,14 +1,9 @@
----
-title: 交叉编译MySQL
-date: 2018-04-08 09:56:57
-tags:
-- 交叉编译
-- MySQL
-- iMX6Q
-categories:
-- Tech
----
 
+# 0 环境描述
+1. 硬件平台：天嵌E9-V3 iMXQ
+1. 交叉编译器版本：arm-none-linux-gnueabihf
+1. MySql版本：5.7.21
+1. 上位机版本：Ubuntu 17.04
 
 # 1 编译前准备  
 
