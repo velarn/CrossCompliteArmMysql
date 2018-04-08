@@ -1,23 +1,24 @@
 
 为天嵌E9交叉编译MySQL
+----
 
 目录
 ----
-* [环境描述](#0-环境描述)
-* [编译前准备](#1-编译前准备)
-* [编译PC版本mysql](#2-编译PC版本MySQL)
-* [编译arm版本mysql](#3-编译arm版本mysql)
-* [部署到目标arm板](#4-部署到目标arm板)
-* [一些其他操作](#5-一些其他操作)
+* [环境描述](#环境描述)
+* [编译前准备](#编译前准备)
+* [编译X86版本mysql](#编译X86版本mysql)
+* [编译arm版本mysql](#编译arm版本mysql)
+* [部署到目标arm板](#部署到目标arm板)
+* [一些其他操作](#一些其他操作)
 
-# 0-环境描述
-----
-1. 硬件平台：天嵌E9-V3 iMXQ
-1. 交叉编译器版本：arm-none-linux-gnueabihf
-1. MySql版本：5.7.21
-1. 上位机版本：Ubuntu 17.04
+# 环境描述
 
-# 1-编译前准备  
+## 1. 硬件平台：天嵌E9-V3 iMXQ
+## 1. 交叉编译器版本：arm-none-linux-gnueabihf
+## 1. MySql版本：5.7.21
+## 1. 上位机版本：Ubuntu 17.04
+
+# 编译前准备  
 
 ##  1.1:主要参考：  
 
@@ -36,9 +37,10 @@
 
 [https://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.9.tar.gz](https://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.9.tar.gz) 
 
-**注意：5.7.21版本mysql对应的boost版本是1.59.0** 
+**注意：5.7.21版本mysql对应的boost版本是1.59.0**  
 
-# 2-编译PC版本MySQL
+
+# 编译X86版本mysql
 
 ##  2.1:解压源码至mysql-5.7.21-pc并编译  
 
@@ -108,7 +110,7 @@ cmake没有错误的情况下，执行make -j4开始编译。
 
 **至此pc版本mysql编译完成**
 
-# 3-编译arm版本mysql  
+# 编译arm版本mysql  
 
 ##  3.1:交叉编译ncurses  
 
@@ -248,7 +250,7 @@ cmake无错误，执行make
 
 **至此ARM版的mysql交叉编译完成。**
 
-# 4-部署到目标arm板  
+# 部署到目标arm板  
 
 ##  4.1:拷贝文件：  
 
@@ -379,7 +381,7 @@ wait_for_pid返回错误肯定是mysqld_safe没起来嘛。于是乎手动测试
 ## 4.5:添加开机启动，待续。
 
 
-# 5-一些其他操作  
+# 一些其他操作  
 
 ##  5.1:登陆mysql：  
 
